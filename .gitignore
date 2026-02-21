@@ -1,6 +1,3 @@
 node_modules
 coverage
-/lib
-target
-_build
-.mooncakes
+lib

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parse } from '../lib/esm/index.js'
+import { parse } from '../index.js'
 
 describe('parse', () => {
   it('parses basic set and item declarations', () => {
@@ -8,7 +8,7 @@ set A 赤
 set B 青
 item A&B x,c`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.sets).toEqual([
       { id: 'A', label: '赤', index: 0 },
@@ -26,7 +26,7 @@ set B 青
 item A p
 item B q`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.items[0].bitmask).toBe(1)
     expect(result.items[1].bitmask).toBe(2)
@@ -42,7 +42,7 @@ item B only-b
 item A&C a-and-c
 item A&B&C all`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.items[0].bitmask).toBe(1)
     expect(result.items[1].bitmask).toBe(2)
@@ -58,7 +58,7 @@ set C 緑
 item A&_&C a-and-c
 item _&B&_ only-b`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.items[0].bitmask).toBe(5)
     expect(result.items[1].bitmask).toBe(2)
@@ -75,13 +75,13 @@ item A     "only-a1"
 item  A    "only-a2"
 item   B   only-b`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
-    expect(result.items[0].bitmask).toBe(5)  // A&C
-    expect(result.items[1].bitmask).toBe(5)  // A & C
-    expect(result.items[2].bitmask).toBe(1)  // A
-    expect(result.items[3].bitmask).toBe(1)  // A
-    expect(result.items[4].bitmask).toBe(2)  // B
+    expect(result.items[0].bitmask).toBe(5) // A&C
+    expect(result.items[1].bitmask).toBe(5) // A & C
+    expect(result.items[2].bitmask).toBe(1) // A
+    expect(result.items[3].bitmask).toBe(1) // A
+    expect(result.items[4].bitmask).toBe(2) // B
   })
 
   it('handles multiple values separated by comma', () => {
@@ -89,13 +89,13 @@ item   B   only-b`
 set A label
 item A val1,val2,val3`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.items[0].values).toEqual(['val1', 'val2', 'val3'])
   })
 
   it('handles empty input with only header', () => {
-    const result = JSON.parse(parse('tagset'))
+    const result = parse('tagset')
 
     expect(result.sets).toEqual([])
     expect(result.items).toEqual([])
@@ -106,7 +106,7 @@ item A val1,val2,val3`
 set A Red Color
 set B Blue Color`
 
-    const result = JSON.parse(parse(input))
+    const result = parse(input)
 
     expect(result.sets[0].label).toBe('Red Color')
     expect(result.sets[1].label).toBe('Blue Color')
@@ -121,6 +121,6 @@ item A x`
   set A 赤
   item A x`
 
-    expect(JSON.parse(parse(flat))).toEqual(JSON.parse(parse(indented)))
+    expect(parse(flat)).toEqual(parse(indented))
   })
 })
