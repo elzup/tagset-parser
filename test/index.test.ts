@@ -4,9 +4,9 @@ import { parse } from '../lib/esm/index.js'
 describe('parse', () => {
   it('parses basic set and item declarations', () => {
     const input = `tagset
-  set A 赤
-  set B 青
-  item A_B x,c`
+set A 赤
+set B 青
+item A&B x,c`
 
     const result = JSON.parse(parse(input))
 
@@ -15,16 +15,16 @@ describe('parse', () => {
       { id: 'B', label: '青', index: 1 },
     ])
     expect(result.items).toEqual([
-      { pattern: 'A_B', bitmask: 3, values: ['x', 'c'] },
+      { pattern: 'A&B', bitmask: 3, values: ['x', 'c'] },
     ])
   })
 
-  it('calculates bitmask correctly for single set', () => {
+  it('calculates bitmask for single set with & syntax', () => {
     const input = `tagset
-  set A 赤
-  set B 青
-  item A__ p
-  item __B q`
+set A 赤
+set B 青
+item A p
+item B q`
 
     const result = JSON.parse(parse(input))
 
@@ -34,26 +34,41 @@ describe('parse', () => {
 
   it('calculates bitmask for three sets', () => {
     const input = `tagset
-  set A 赤
-  set B 青
-  set C 緑
-  item A____ only-a
-  item _B___ only-b
-  item A___C a-and-c
-  item _____ none`
+set A 赤
+set B 青
+set C 緑
+item A only-a
+item B only-b
+item A&C a-and-c
+item A&B&C all`
 
     const result = JSON.parse(parse(input))
 
     expect(result.items[0].bitmask).toBe(1)
     expect(result.items[1].bitmask).toBe(2)
     expect(result.items[2].bitmask).toBe(5)
-    expect(result.items[3].bitmask).toBe(0)
+    expect(result.items[3].bitmask).toBe(7)
+  })
+
+  it('supports legacy _ padding syntax', () => {
+    const input = `tagset
+set A 赤
+set B 青
+item A__ p
+item __B q
+item A_B both`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.items[0].bitmask).toBe(1)
+    expect(result.items[1].bitmask).toBe(2)
+    expect(result.items[2].bitmask).toBe(3)
   })
 
   it('handles multiple values separated by comma', () => {
     const input = `tagset
-  set A label
-  item A val1,val2,val3`
+set A label
+item A val1,val2,val3`
 
     const result = JSON.parse(parse(input))
 
@@ -61,9 +76,7 @@ describe('parse', () => {
   })
 
   it('handles empty input with only header', () => {
-    const input = `tagset`
-
-    const result = JSON.parse(parse(input))
+    const result = JSON.parse(parse('tagset'))
 
     expect(result.sets).toEqual([])
     expect(result.items).toEqual([])
@@ -71,12 +84,27 @@ describe('parse', () => {
 
   it('handles labels with spaces', () => {
     const input = `tagset
-  set A Red Color
-  set B Blue Color`
+set A Red Color
+set B Blue Color`
 
     const result = JSON.parse(parse(input))
 
     expect(result.sets[0].label).toBe('Red Color')
     expect(result.sets[1].label).toBe('Blue Color')
+  })
+
+  it('ignores indentation (flat and indented both work)', () => {
+    const flat = `tagset
+set A 赤
+item A x`
+
+    const indented = `tagset
+  set A 赤
+  item A x`
+
+    const resultFlat = JSON.parse(parse(flat))
+    const resultIndented = JSON.parse(parse(indented))
+
+    expect(resultFlat).toEqual(resultIndented)
   })
 })
