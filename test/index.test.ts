@@ -64,6 +64,26 @@ item _&B&_ only-b`
     expect(result.items[1].bitmask).toBe(2)
   })
 
+  it('supports padding syntax', () => {
+    const input = `tagset
+set A 赤
+set B 青
+set C 緑
+item A  &C a-and-c
+item A & C a-and-c2
+item A     "only-a1"
+item  A    "only-a2"
+item   B   only-b`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.items[0].bitmask).toBe(5)  // A&C
+    expect(result.items[1].bitmask).toBe(5)  // A & C
+    expect(result.items[2].bitmask).toBe(1)  // A
+    expect(result.items[3].bitmask).toBe(1)  // A
+    expect(result.items[4].bitmask).toBe(2)  // B
+  })
+
   it('handles multiple values separated by comma', () => {
     const input = `tagset
 set A label
