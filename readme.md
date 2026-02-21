@@ -1,28 +1,19 @@
-# TODO
+# tagset-parser
 
-> TODO
+> TagSet DSL parser
 
 ## Install
 
 ```
-$ npm install TODO
+$ npm install tagset-parser
 ```
-
-## Doc
-
-[./src/\_\_test\_\_](./src/__test__)
 
 ## Usage
 
 ```js
-const { hoge } = require('TODO')
-
-/* tree shaking */
-// const { hoge } = require('elzup/TODO/lib/hoge')
-
-hoge()
+import { } from 'tagset-parser'
 ```
 
 ## License
 
-MIT © [anozon](https://anozon.me)
+MIT

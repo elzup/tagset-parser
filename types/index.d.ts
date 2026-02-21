@@ -1,14 +1,18 @@
-/**
- * Add two integers
- * @param a - First integer
- * @param b - Second integer
- * @returns Sum of a and b
- */
-export function add(a: number, b: number): number;
+export interface SetDecl {
+  id: string
+  label: string
+  index: number
+}
 
-/**
- * Greet with a name
- * @param name - Name to greet
- * @returns Greeting message
- */
-export function greet(name: string): string;
+export interface ItemDecl {
+  pattern: string
+  bitmask: number
+  values: string[]
+}
+
+export interface TagSetAST {
+  sets: SetDecl[]
+  items: ItemDecl[]
+}
+
+export function parse(input: string): string

@@ -2,8 +2,7 @@
   "link": {
     "js": {
       "exports": [
-        "add",
-        "greet"
+        "parse"
       ],
       "format": "esm"
     }

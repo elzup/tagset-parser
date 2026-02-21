@@ -1,26 +1,82 @@
 import { describe, expect, it } from 'vitest'
-import { add, greet } from '../lib/esm/index.js'
+import { parse } from '../lib/esm/index.js'
 
-describe('add', () => {
-  it('should add two positive numbers', () => {
-    expect(add(1, 2)).toBe(3)
+describe('parse', () => {
+  it('parses basic set and item declarations', () => {
+    const input = `tagset
+  set A 赤
+  set B 青
+  item A_B x,c`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.sets).toEqual([
+      { id: 'A', label: '赤', index: 0 },
+      { id: 'B', label: '青', index: 1 },
+    ])
+    expect(result.items).toEqual([
+      { pattern: 'A_B', bitmask: 3, values: ['x', 'c'] },
+    ])
   })
 
-  it('should handle negative numbers', () => {
-    expect(add(-1, 1)).toBe(0)
+  it('calculates bitmask correctly for single set', () => {
+    const input = `tagset
+  set A 赤
+  set B 青
+  item A__ p
+  item __B q`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.items[0].bitmask).toBe(1)
+    expect(result.items[1].bitmask).toBe(2)
   })
 
-  it('should handle zero', () => {
-    expect(add(0, 0)).toBe(0)
-  })
-})
+  it('calculates bitmask for three sets', () => {
+    const input = `tagset
+  set A 赤
+  set B 青
+  set C 緑
+  item A____ only-a
+  item _B___ only-b
+  item A___C a-and-c
+  item _____ none`
 
-describe('greet', () => {
-  it('should greet with name', () => {
-    expect(greet('World')).toBe('Hello, World!')
+    const result = JSON.parse(parse(input))
+
+    expect(result.items[0].bitmask).toBe(1)
+    expect(result.items[1].bitmask).toBe(2)
+    expect(result.items[2].bitmask).toBe(5)
+    expect(result.items[3].bitmask).toBe(0)
   })
 
-  it('should greet MoonBit', () => {
-    expect(greet('MoonBit')).toBe('Hello, MoonBit!')
+  it('handles multiple values separated by comma', () => {
+    const input = `tagset
+  set A label
+  item A val1,val2,val3`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.items[0].values).toEqual(['val1', 'val2', 'val3'])
+  })
+
+  it('handles empty input with only header', () => {
+    const input = `tagset`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.sets).toEqual([])
+    expect(result.items).toEqual([])
+  })
+
+  it('handles labels with spaces', () => {
+    const input = `tagset
+  set A Red Color
+  set B Blue Color`
+
+    const result = JSON.parse(parse(input))
+
+    expect(result.sets[0].label).toBe('Red Color')
+    expect(result.sets[1].label).toBe('Blue Color')
   })
 })

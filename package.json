@@ -1,7 +1,7 @@
 {
-  "name": "TODO",
+  "name": "tagset-parser",
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "TagSet DSL parser",
   "author": "elzup",
   "license": "MIT",
   "type": "module",
@@ -15,11 +15,11 @@
       "require": "./lib/cjs/index.js"
     }
   },
-  "repository": "elzup/TODO",
+  "repository": "elzup/tagset-parser",
   "bugs": {
-    "url": "https://github.com/elzup/TODO/issues"
+    "url": "https://github.com/elzup/tagset-parser/issues"
   },
-  "homepage": "https://github.com/elzup/TODO#readme",
+  "homepage": "https://github.com/elzup/tagset-parser#readme",
   "keywords": [
     "moonbit",
     "utils"

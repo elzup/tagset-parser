@@ -31,7 +31,7 @@ function buildFormat(format) {
     const outputDir = join(LIB_DIR, format);
     mkdirSync(outputDir, { recursive: true });
 
-    const buildOutput = join(ROOT, "target/js/release/build/lib/lib.js");
+    const buildOutput = join(ROOT, "_build/js/debug/build/lib/lib.js");
     cpSync(buildOutput, join(outputDir, "index.js"));
 
     // Add package.json for CJS
