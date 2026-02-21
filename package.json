@@ -30,6 +30,7 @@
   },
   "packageManager": "pnpm@9.15.4",
   "scripts": {
+    "generate": "antlr-ng -Dlanguage=TypeScript --generate-visitor -o src/generated src/grammar/TagSet.g4",
     "clean": "rimraf lib",
     "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs && echo '{\"type\": \"commonjs\"}' > lib/cjs/package.json",
@@ -52,9 +53,13 @@
     "@types/node": "24.10.1",
     "@vitest/coverage-v8": "^4.0.15",
     "@vitest/ui": "^4.0.15",
+    "antlr-ng": "^1.0.10",
     "oxlint": "^1.31.0",
     "rimraf": "^6.1.2",
     "typescript": "5.9.3",
     "vitest": "^4.0.15"
+  },
+  "dependencies": {
+    "antlr4ng": "^3.0.16"
   }
 }
