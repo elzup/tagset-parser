@@ -19,7 +19,7 @@ item A&B x,c`
     ])
   })
 
-  it('calculates bitmask for single set with & syntax', () => {
+  it('calculates bitmask for single set', () => {
     const input = `tagset
 set A 赤
 set B 青
@@ -50,19 +50,18 @@ item A&B&C all`
     expect(result.items[3].bitmask).toBe(7)
   })
 
-  it('supports legacy _ padding syntax', () => {
+  it('supports _ placeholder in & syntax', () => {
     const input = `tagset
 set A 赤
 set B 青
-item A__ p
-item __B q
-item A_B both`
+set C 緑
+item A&_&C a-and-c
+item _&B&_ only-b`
 
     const result = JSON.parse(parse(input))
 
-    expect(result.items[0].bitmask).toBe(1)
+    expect(result.items[0].bitmask).toBe(5)
     expect(result.items[1].bitmask).toBe(2)
-    expect(result.items[2].bitmask).toBe(3)
   })
 
   it('handles multiple values separated by comma', () => {
@@ -93,7 +92,7 @@ set B Blue Color`
     expect(result.sets[1].label).toBe('Blue Color')
   })
 
-  it('ignores indentation (flat and indented both work)', () => {
+  it('ignores indentation', () => {
     const flat = `tagset
 set A 赤
 item A x`
@@ -102,9 +101,6 @@ item A x`
   set A 赤
   item A x`
 
-    const resultFlat = JSON.parse(parse(flat))
-    const resultIndented = JSON.parse(parse(indented))
-
-    expect(resultFlat).toEqual(resultIndented)
+    expect(JSON.parse(parse(flat))).toEqual(JSON.parse(parse(indented)))
   })
 })

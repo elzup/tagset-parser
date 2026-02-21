@@ -70,29 +70,14 @@ fn split_collect(s : String, sep : String) -> Array[String] {
   result
 }
 
-fn contains_char(s : String, c : UInt16) -> Bool {
-  for i = 0; i < s.length(); i = i + 1 {
-    if s[i] == c {
-      return true
-    }
-  }
-  false
-}
-
 fn calc_bitmask(pattern : String, sets : Array[SetDecl]) -> Int {
-  // Support both "&" syntax (A&B) and "_" padding syntax (A____, _B_)
-  let has_ampersand = contains_char(pattern, '&'.to_int().to_uint16())
-  let tokens = if has_ampersand {
-    split_collect(pattern, "&")
-  } else {
-    // Legacy "_" syntax: split by "_" and filter empty
-    split_collect(pattern, "_")
-  }
+  let tokens = split_collect(pattern, "&")
   let mut mask = 0
   for token in tokens {
-    if token != "" {
+    let t = trim(token)
+    if t != "" && t != "_" {
       for set in sets {
-        if set.id == token {
+        if set.id == t {
           mask = mask | (1 << set.index)
         }
       }
