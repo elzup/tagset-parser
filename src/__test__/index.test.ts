@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { parse } from '../index.js'
 
-const HEADER_3SETS = `tagset
+const HEADER_3SETS = `
 set A 赤
 set B 青
-set C 緑`
+set C 緑`.trim()
 
 describe('parse', () => {
   describe('set declarations', () => {
     it('parses basic set declarations', () => {
-      const input = `tagset
+      const input = `
 set A 赤
-set B 青`
+set B 青`.trim()
 
       const result = parse(input)
 
@@ -22,9 +22,9 @@ set B 青`
     })
 
     it('handles labels with spaces', () => {
-      const input = `tagset
+      const input = `
 set A Red Color
-set B Blue Color`
+set B Blue Color`.trim()
 
       const result = parse(input)
 
@@ -32,8 +32,8 @@ set B Blue Color`
       expect(result.sets[1].label).toBe('Blue Color')
     })
 
-    it('handles empty input with only header', () => {
-      const result = parse('tagset')
+    it('handles empty input', () => {
+      const result = parse('')
 
       expect(result.sets).toEqual([])
       expect(result.items).toEqual([])
@@ -42,10 +42,10 @@ set B Blue Color`
 
   describe('item declarations', () => {
     it('parses basic item with pattern and values', () => {
-      const input = `tagset
+      const input = `
 set A 赤
 set B 青
-item A&B x,c`
+item A&B x,c`.trim()
 
       const result = parse(input)
 
@@ -55,9 +55,9 @@ item A&B x,c`
     })
 
     it('handles multiple values separated by comma', () => {
-      const input = `tagset
+      const input = `
 set A label
-item A val1,val2,val3`
+item A val1,val2,val3`.trim()
 
       const result = parse(input)
 
@@ -67,11 +67,11 @@ item A val1,val2,val3`
 
   describe('bitmask calculation', () => {
     it('single set', () => {
-      const input = `tagset
+      const input = `
 set A 赤
 set B 青
 item A p
-item B q`
+item B q`.trim()
 
       const result = parse(input)
 
@@ -80,11 +80,12 @@ item B q`
     })
 
     it('three sets', () => {
-      const input = `${HEADER_3SETS}
+      const input = `
+${HEADER_3SETS}
 item A only-a
 item B only-b
 item A&C a-and-c
-item A&B&C all`
+item A&B&C all`.trim()
 
       const result = parse(input)
 
@@ -97,9 +98,10 @@ item A&B&C all`
 
   describe('pattern syntax', () => {
     it('supports _ placeholder in & syntax', () => {
-      const input = `${HEADER_3SETS}
+      const input = `
+${HEADER_3SETS}
 item A&_&C a-and-c
-item _&B&_ only-b`
+item _&B&_ only-b`.trim()
 
       const result = parse(input)
 
@@ -108,12 +110,13 @@ item _&B&_ only-b`
     })
 
     it('supports padding syntax with spaces', () => {
-      const input = `${HEADER_3SETS}
+      const input = `
+${HEADER_3SETS}
 item A  &C a-and-c
 item A & C a-and-c2
 item A     "only-a1"
 item  A    "only-a2"
-item   B   only-b`
+item   B   only-b`.trim()
 
       const result = parse(input)
 
@@ -127,13 +130,13 @@ item   B   only-b`
 
   describe('formatting', () => {
     it('ignores indentation', () => {
-      const flat = `tagset
+      const flat = `
 set A 赤
-item A x`
+item A x`.trim()
 
-      const indented = `tagset
+      const indented = `
   set A 赤
-  item A x`
+  item A x`.trim()
 
       expect(parse(flat)).toEqual(parse(indented))
     })
@@ -141,10 +144,10 @@ item A x`
 
   describe('colon syntax', () => {
     it('parses single set with colon', () => {
-      const input = `tagset
+      const input = `
 set A 赤
 set B 青
-A : 1, 2`
+A : 1, 2`.trim()
 
       const result = parse(input)
 
@@ -154,8 +157,9 @@ A : 1, 2`
     })
 
     it('parses multiple sets with colon', () => {
-      const input = `${HEADER_3SETS}
-A,B,C : x, y`
+      const input = `
+${HEADER_3SETS}
+A,B,C : x, y`.trim()
 
       const result = parse(input)
 
@@ -165,9 +169,10 @@ A,B,C : x, y`
     })
 
     it('mixes item and colon syntax', () => {
-      const input = `${HEADER_3SETS}
+      const input = `
+${HEADER_3SETS}
 item A&B special
-A,C : 1, 2`
+A,C : 1, 2`.trim()
 
       const result = parse(input)
 

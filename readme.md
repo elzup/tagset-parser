@@ -14,8 +14,7 @@ $ npm install tagset-parser
 import { parse } from 'tagset-parser'
 
 // Classic syntax
-const ast = parse(`tagset
-set A 赤
+const ast = parse(`set A 赤
 set B 青
 item A&B x,c`)
 

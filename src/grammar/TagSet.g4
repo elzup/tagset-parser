@@ -7,11 +7,7 @@ program
     ;
 
 line
-    : (headerDecl | setDecl | itemDecl | sugarDecl) NL?
-    ;
-
-headerDecl
-    : TAGSET
+    : (setDecl | itemDecl | sugarDecl) NL?
     ;
 
 setDecl
@@ -45,7 +41,6 @@ valueItem
 
 // Lexer Rules
 
-TAGSET          : 'tagset' ;
 SET             : 'set' ;
 ITEM            : 'item' ;
 

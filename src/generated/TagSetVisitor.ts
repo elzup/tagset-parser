@@ -4,7 +4,6 @@ import { AbstractParseTreeVisitor } from "antlr4ng";
 
 import { ProgramContext } from "./TagSetParser.js";
 import { LineContext } from "./TagSetParser.js";
-import { HeaderDeclContext } from "./TagSetParser.js";
 import { SetDeclContext } from "./TagSetParser.js";
 import { LabelPartContext } from "./TagSetParser.js";
 import { ItemDeclContext } from "./TagSetParser.js";
@@ -34,12 +33,6 @@ export class TagSetVisitor<Result> extends AbstractParseTreeVisitor<Result> {
      * @return the visitor result
      */
     visitLine?: (ctx: LineContext) => Result;
-    /**
-     * Visit a parse tree produced by `TagSetParser.headerDecl`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitHeaderDecl?: (ctx: HeaderDeclContext) => Result;
     /**
      * Visit a parse tree produced by `TagSetParser.setDecl`.
      * @param ctx the parse tree

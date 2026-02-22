@@ -4,7 +4,6 @@ import { ErrorNode, ParseTreeListener, ParserRuleContext, TerminalNode } from "a
 
 import { ProgramContext } from "./TagSetParser.js";
 import { LineContext } from "./TagSetParser.js";
-import { HeaderDeclContext } from "./TagSetParser.js";
 import { SetDeclContext } from "./TagSetParser.js";
 import { LabelPartContext } from "./TagSetParser.js";
 import { ItemDeclContext } from "./TagSetParser.js";
@@ -39,16 +38,6 @@ export class TagSetListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitLine?: (ctx: LineContext) => void;
-    /**
-     * Enter a parse tree produced by `TagSetParser.headerDecl`.
-     * @param ctx the parse tree
-     */
-    enterHeaderDecl?: (ctx: HeaderDeclContext) => void;
-    /**
-     * Exit a parse tree produced by `TagSetParser.headerDecl`.
-     * @param ctx the parse tree
-     */
-    exitHeaderDecl?: (ctx: HeaderDeclContext) => void;
     /**
      * Enter a parse tree produced by `TagSetParser.setDecl`.
      * @param ctx the parse tree
