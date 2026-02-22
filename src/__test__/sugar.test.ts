@@ -6,9 +6,7 @@ describe('sugar syntax (colon)', () => {
     const input = `set A 赤
 A: x`
     const result = parse(input)
-    expect(result.items).toEqual([
-      { pattern: 'A', bitmask: 1, values: ['x'] },
-    ])
+    expect(result.items).toEqual([{ pattern: 'A', bitmask: 1, values: ['x'] }])
   })
 
   it('parses multiple sets with colon syntax', () => {
