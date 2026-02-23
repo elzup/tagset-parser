@@ -4,7 +4,6 @@ import type {
   SetDeclContext,
   ItemDeclContext,
   SugarDeclContext,
-  PatternContext,
   ValueListContext,
   ValueItemContext,
 } from './generated/TagSetParser.js'
@@ -14,13 +13,6 @@ import type { SetDecl, ItemDecl, TagSetAST } from './types.js'
 interface RawItem {
   patternIds: string[]
   values: string[]
-}
-
-function extractPatternIds(ctx: PatternContext): string[] {
-  return ctx
-    .WORD()
-    .map((w) => w.getText())
-    .filter((t) => t !== '_')
 }
 
 function extractValues(ctx: ValueListContext): string[] {
@@ -85,8 +77,8 @@ export class TagSetASTVisitor extends TagSetVisitor<void> {
   }
 
   override visitItemDecl = (ctx: ItemDeclContext): void => {
-    const patternCtx = ctx.pattern()
-    const patternIds = extractPatternIds(patternCtx)
+    const id = ctx.WORD()!.getText()
+    const patternIds = id === '_' ? [] : [id]
     const values = extractValues(ctx.valueList())
     this.rawItems.push({ patternIds, values })
   }
@@ -103,7 +95,7 @@ export class TagSetASTVisitor extends TagSetVisitor<void> {
   buildAST(): TagSetAST {
     const sets = autoDetectSets(this.explicitSets, this.rawItems)
     const items: ItemDecl[] = this.rawItems.map((raw) => {
-      const pattern = raw.patternIds.join('&')
+      const pattern = raw.patternIds.join(',')
       const bitmask = calcBitmask(pattern, sets)
       return { pattern, bitmask, values: raw.values }
     })

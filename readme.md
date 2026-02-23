@@ -16,12 +16,11 @@ $ npm install tagset-parser
 set A 赤
 set B 青
 
-item A    apple, red
-item B    sky, ocean
-item A&B  purple, violet
-# syntax suger (Both syntaxes can be mixed freely.)
-A,B : purple, violet
-A,B,_ :  purple, violet
+item A  apple, red
+item B  sky, ocean
+# colon syntax (both syntaxes can be mixed freely)
+A, B: purple, violet
+A, B, _: purple, violet
 ```
 
 ### Auto-Detect Sets
@@ -38,11 +37,11 @@ Explicit and auto-detected sets can coexist — `set A Red` gives A a label, whi
 
 ### Placeholder `_`
 
-`_` is ignored in patterns, useful for alignment in `item` syntax.
+`_` is ignored in patterns, useful for alignment.
 
 ```
-item A&_&C  a-and-c
-item _&B&_  only-b
+A, _, C: a-and-c
+_, B, _: only-b
 ```
 
 ### Quoted Strings
@@ -60,10 +59,10 @@ set A 赤    → index 0 → bit 1
 set B 青    → index 1 → bit 2
 set C 緑    → index 2 → bit 4
 
-item A      → bitmask: 1  (0b001)
-item B      → bitmask: 2  (0b010)
-item A&C    → bitmask: 5  (0b101)
-item A&B&C  → bitmask: 7  (0b111)
+A:       → bitmask: 1  (0b001)
+B:       → bitmask: 2  (0b010)
+A, C:    → bitmask: 5  (0b101)
+A, B, C: → bitmask: 7  (0b111)
 ```
 
 ## Usage
@@ -74,7 +73,7 @@ import { parse } from 'tagset-parser'
 const ast = parse(`
 set A 赤
 set B 青
-item A&B x, y
+A, B: x, y
 A: solo
 `)
 
@@ -83,7 +82,7 @@ ast.sets
 
 ast.items
 // [
-//   { pattern: 'A&B', bitmask: 3, values: ['x', 'y'] },
+//   { pattern: 'A,B', bitmask: 3, values: ['x', 'y'] },
 //   { pattern: 'A',   bitmask: 1, values: ['solo'] },
 // ]
 ```

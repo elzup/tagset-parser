@@ -8,7 +8,6 @@ import { SetDeclContext } from "./TagSetParser.js";
 import { LabelPartContext } from "./TagSetParser.js";
 import { ItemDeclContext } from "./TagSetParser.js";
 import { SugarDeclContext } from "./TagSetParser.js";
-import { PatternContext } from "./TagSetParser.js";
 import { ValueListContext } from "./TagSetParser.js";
 import { ValueItemContext } from "./TagSetParser.js";
 
@@ -78,16 +77,6 @@ export class TagSetListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSugarDecl?: (ctx: SugarDeclContext) => void;
-    /**
-     * Enter a parse tree produced by `TagSetParser.pattern`.
-     * @param ctx the parse tree
-     */
-    enterPattern?: (ctx: PatternContext) => void;
-    /**
-     * Exit a parse tree produced by `TagSetParser.pattern`.
-     * @param ctx the parse tree
-     */
-    exitPattern?: (ctx: PatternContext) => void;
     /**
      * Enter a parse tree produced by `TagSetParser.valueList`.
      * @param ctx the parse tree

@@ -1,7 +1,7 @@
 import type { SetDecl } from './types.js'
 
 export function calcBitmask(pattern: string, sets: SetDecl[]): number {
-  const tokens = pattern.split('&')
+  const tokens = pattern.split(',')
   let mask = 0
   for (const token of tokens) {
     const t = token.trim()

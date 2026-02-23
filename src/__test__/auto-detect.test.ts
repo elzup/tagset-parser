@@ -3,13 +3,10 @@ import { parse } from '../index.js'
 
 describe('auto-detect sets', () => {
   it('auto-detects sets from item patterns when no set declared', () => {
-    const input = `item A&B x`
+    const input = `item A x`
     const result = parse(input)
-    expect(result.sets).toEqual([
-      { id: 'A', label: 'A', index: 0 },
-      { id: 'B', label: 'B', index: 1 },
-    ])
-    expect(result.items[0].bitmask).toBe(3)
+    expect(result.sets).toEqual([{ id: 'A', label: 'A', index: 0 }])
+    expect(result.items[0].bitmask).toBe(1)
   })
 
   it('auto-detects sets from sugar syntax', () => {
@@ -32,8 +29,8 @@ A, B: x`
   })
 
   it('auto-detects from multiple items without duplicates', () => {
-    const input = `item A&B x
-item B&C y`
+    const input = `A, B: x
+B, C: y`
     const result = parse(input)
     expect(result.sets).toHaveLength(3)
     expect(result.sets.map((s) => s.id)).toEqual(['A', 'B', 'C'])
@@ -53,8 +50,8 @@ item A x`
     expect(result.items).toEqual([])
   })
 
-  it('auto-detect ignores _ placeholder', () => {
-    const input = `item A&_&C x`
+  it('auto-detect ignores _ placeholder in sugar syntax', () => {
+    const input = `A,_,C: x`
     const result = parse(input)
     expect(result.sets.map((s) => s.id)).toEqual(['A', 'C'])
     expect(result.items[0].bitmask).toBe(3)

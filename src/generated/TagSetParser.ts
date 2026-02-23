@@ -13,11 +13,11 @@ type int = number;
 export class TagSetParser extends antlr.Parser {
     public static readonly SET = 1;
     public static readonly ITEM = 2;
-    public static readonly AMP = 3;
-    public static readonly COMMA = 4;
-    public static readonly COLON = 5;
-    public static readonly QUOTED_STRING = 6;
-    public static readonly WORD = 7;
+    public static readonly COMMA = 3;
+    public static readonly COLON = 4;
+    public static readonly QUOTED_STRING = 5;
+    public static readonly WORD = 6;
+    public static readonly COMMENT = 7;
     public static readonly NL = 8;
     public static readonly WS = 9;
     public static readonly RULE_program = 0;
@@ -26,21 +26,20 @@ export class TagSetParser extends antlr.Parser {
     public static readonly RULE_labelPart = 3;
     public static readonly RULE_itemDecl = 4;
     public static readonly RULE_sugarDecl = 5;
-    public static readonly RULE_pattern = 6;
-    public static readonly RULE_valueList = 7;
-    public static readonly RULE_valueItem = 8;
+    public static readonly RULE_valueList = 6;
+    public static readonly RULE_valueItem = 7;
 
     public static readonly literalNames = [
-        null, "'set'", "'item'", "'&'", "','", "':'"
+        null, "'set'", "'item'", "','", "':'"
     ];
 
     public static readonly symbolicNames = [
-        null, "SET", "ITEM", "AMP", "COMMA", "COLON", "QUOTED_STRING", "WORD", 
-        "NL", "WS"
+        null, "SET", "ITEM", "COMMA", "COLON", "QUOTED_STRING", "WORD", 
+        "COMMENT", "NL", "WS"
     ];
     public static readonly ruleNames = [
         "program", "line", "setDecl", "labelPart", "itemDecl", "sugarDecl", 
-        "pattern", "valueList", "valueItem",
+        "valueList", "valueItem",
     ];
 
     public get grammarFileName(): string { return "TagSet.g4"; }
@@ -64,17 +63,17 @@ export class TagSetParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 22;
+            this.state = 20;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
-            while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 390) !== 0)) {
+            while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 326) !== 0)) {
                 {
-                this.state = 20;
+                this.state = 18;
                 this.errorHandler.sync(this);
                 switch (this.tokenStream.LA(1)) {
                 case TagSetParser.NL:
                     {
-                    this.state = 18;
+                    this.state = 16;
                     this.match(TagSetParser.NL);
                     }
                     break;
@@ -82,7 +81,7 @@ export class TagSetParser extends antlr.Parser {
                 case TagSetParser.ITEM:
                 case TagSetParser.WORD:
                     {
-                    this.state = 19;
+                    this.state = 17;
                     this.line();
                     }
                     break;
@@ -90,11 +89,11 @@ export class TagSetParser extends antlr.Parser {
                     throw new antlr.NoViableAltException(this);
                 }
                 }
-                this.state = 24;
+                this.state = 22;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
-            this.state = 25;
+            this.state = 23;
             this.match(TagSetParser.EOF);
             }
         }
@@ -117,36 +116,36 @@ export class TagSetParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 30;
+            this.state = 28;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case TagSetParser.SET:
                 {
-                this.state = 27;
+                this.state = 25;
                 this.setDecl();
                 }
                 break;
             case TagSetParser.ITEM:
                 {
-                this.state = 28;
+                this.state = 26;
                 this.itemDecl();
                 }
                 break;
             case TagSetParser.WORD:
                 {
-                this.state = 29;
+                this.state = 27;
                 this.sugarDecl();
                 }
                 break;
             default:
                 throw new antlr.NoViableAltException(this);
             }
-            this.state = 33;
+            this.state = 31;
             this.errorHandler.sync(this);
             switch (this.interpreter.adaptivePredict(this.tokenStream, 3, this.context) ) {
             case 1:
                 {
-                this.state = 32;
+                this.state = 30;
                 this.match(TagSetParser.NL);
                 }
                 break;
@@ -173,11 +172,11 @@ export class TagSetParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 35;
+            this.state = 33;
             this.match(TagSetParser.SET);
-            this.state = 36;
+            this.state = 34;
             this.match(TagSetParser.WORD);
-            this.state = 38;
+            this.state = 36;
             this.errorHandler.sync(this);
             alternative = 1;
             do {
@@ -185,7 +184,7 @@ export class TagSetParser extends antlr.Parser {
                 case 1:
                     {
                     {
-                    this.state = 37;
+                    this.state = 35;
                     this.labelPart();
                     }
                     }
@@ -193,7 +192,7 @@ export class TagSetParser extends antlr.Parser {
                 default:
                     throw new antlr.NoViableAltException(this);
                 }
-                this.state = 40;
+                this.state = 38;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 4, this.context);
             } while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER);
@@ -219,9 +218,9 @@ export class TagSetParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 42;
+            this.state = 40;
             _la = this.tokenStream.LA(1);
-            if(!(_la === 6 || _la === 7)) {
+            if(!(_la === 5 || _la === 6)) {
             this.errorHandler.recoverInline(this);
             }
             else {
@@ -249,11 +248,11 @@ export class TagSetParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 44;
+            this.state = 42;
             this.match(TagSetParser.ITEM);
-            this.state = 45;
-            this.pattern();
-            this.state = 46;
+            this.state = 43;
+            this.match(TagSetParser.WORD);
+            this.state = 44;
             this.valueList();
             }
         }
@@ -277,68 +276,28 @@ export class TagSetParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 48;
+            this.state = 46;
             this.match(TagSetParser.WORD);
-            this.state = 53;
-            this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
-            while (_la === 4) {
-                {
-                {
-                this.state = 49;
-                this.match(TagSetParser.COMMA);
-                this.state = 50;
-                this.match(TagSetParser.WORD);
-                }
-                }
-                this.state = 55;
-                this.errorHandler.sync(this);
-                _la = this.tokenStream.LA(1);
-            }
-            this.state = 56;
-            this.match(TagSetParser.COLON);
-            this.state = 57;
-            this.valueList();
-            }
-        }
-        catch (re) {
-            if (re instanceof antlr.RecognitionException) {
-                this.errorHandler.reportError(this, re);
-                this.errorHandler.recover(this, re);
-            } else {
-                throw re;
-            }
-        }
-        finally {
-            this.exitRule();
-        }
-        return localContext;
-    }
-    public pattern(): PatternContext {
-        let localContext = new PatternContext(this.context, this.state);
-        this.enterRule(localContext, 12, TagSetParser.RULE_pattern);
-        let _la: number;
-        try {
-            this.enterOuterAlt(localContext, 1);
-            {
-            this.state = 59;
-            this.match(TagSetParser.WORD);
-            this.state = 64;
+            this.state = 51;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 3) {
                 {
                 {
-                this.state = 60;
-                this.match(TagSetParser.AMP);
-                this.state = 61;
+                this.state = 47;
+                this.match(TagSetParser.COMMA);
+                this.state = 48;
                 this.match(TagSetParser.WORD);
                 }
                 }
-                this.state = 66;
+                this.state = 53;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
+            this.state = 54;
+            this.match(TagSetParser.COLON);
+            this.state = 55;
+            this.valueList();
             }
         }
         catch (re) {
@@ -356,26 +315,26 @@ export class TagSetParser extends antlr.Parser {
     }
     public valueList(): ValueListContext {
         let localContext = new ValueListContext(this.context, this.state);
-        this.enterRule(localContext, 14, TagSetParser.RULE_valueList);
+        this.enterRule(localContext, 12, TagSetParser.RULE_valueList);
         let _la: number;
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 67;
+            this.state = 57;
             this.valueItem();
-            this.state = 72;
+            this.state = 62;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
-            while (_la === 4) {
+            while (_la === 3) {
                 {
                 {
-                this.state = 68;
+                this.state = 58;
                 this.match(TagSetParser.COMMA);
-                this.state = 69;
+                this.state = 59;
                 this.valueItem();
                 }
                 }
-                this.state = 74;
+                this.state = 64;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -396,13 +355,13 @@ export class TagSetParser extends antlr.Parser {
     }
     public valueItem(): ValueItemContext {
         let localContext = new ValueItemContext(this.context, this.state);
-        this.enterRule(localContext, 16, TagSetParser.RULE_valueItem);
+        this.enterRule(localContext, 14, TagSetParser.RULE_valueItem);
         let _la: number;
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 76;
+            this.state = 66;
             this.errorHandler.sync(this);
             alternative = 1;
             do {
@@ -410,9 +369,9 @@ export class TagSetParser extends antlr.Parser {
                 case 1:
                     {
                     {
-                    this.state = 75;
+                    this.state = 65;
                     _la = this.tokenStream.LA(1);
-                    if(!(_la === 6 || _la === 7)) {
+                    if(!(_la === 5 || _la === 6)) {
                     this.errorHandler.recoverInline(this);
                     }
                     else {
@@ -425,9 +384,9 @@ export class TagSetParser extends antlr.Parser {
                 default:
                     throw new antlr.NoViableAltException(this);
                 }
-                this.state = 78;
+                this.state = 68;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
             } while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER);
             }
         }
@@ -446,31 +405,28 @@ export class TagSetParser extends antlr.Parser {
     }
 
     public static readonly _serializedATN: number[] = [
-        4,1,9,81,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,
-        2,7,7,7,2,8,7,8,1,0,1,0,5,0,21,8,0,10,0,12,0,24,9,0,1,0,1,0,1,1,
-        1,1,1,1,3,1,31,8,1,1,1,3,1,34,8,1,1,2,1,2,1,2,4,2,39,8,2,11,2,12,
-        2,40,1,3,1,3,1,4,1,4,1,4,1,4,1,5,1,5,1,5,5,5,52,8,5,10,5,12,5,55,
-        9,5,1,5,1,5,1,5,1,6,1,6,1,6,5,6,63,8,6,10,6,12,6,66,9,6,1,7,1,7,
-        1,7,5,7,71,8,7,10,7,12,7,74,9,7,1,8,4,8,77,8,8,11,8,12,8,78,1,8,
-        0,0,9,0,2,4,6,8,10,12,14,16,0,1,1,0,6,7,81,0,22,1,0,0,0,2,30,1,0,
-        0,0,4,35,1,0,0,0,6,42,1,0,0,0,8,44,1,0,0,0,10,48,1,0,0,0,12,59,1,
-        0,0,0,14,67,1,0,0,0,16,76,1,0,0,0,18,21,5,8,0,0,19,21,3,2,1,0,20,
-        18,1,0,0,0,20,19,1,0,0,0,21,24,1,0,0,0,22,20,1,0,0,0,22,23,1,0,0,
-        0,23,25,1,0,0,0,24,22,1,0,0,0,25,26,5,0,0,1,26,1,1,0,0,0,27,31,3,
-        4,2,0,28,31,3,8,4,0,29,31,3,10,5,0,30,27,1,0,0,0,30,28,1,0,0,0,30,
-        29,1,0,0,0,31,33,1,0,0,0,32,34,5,8,0,0,33,32,1,0,0,0,33,34,1,0,0,
-        0,34,3,1,0,0,0,35,36,5,1,0,0,36,38,5,7,0,0,37,39,3,6,3,0,38,37,1,
-        0,0,0,39,40,1,0,0,0,40,38,1,0,0,0,40,41,1,0,0,0,41,5,1,0,0,0,42,
-        43,7,0,0,0,43,7,1,0,0,0,44,45,5,2,0,0,45,46,3,12,6,0,46,47,3,14,
-        7,0,47,9,1,0,0,0,48,53,5,7,0,0,49,50,5,4,0,0,50,52,5,7,0,0,51,49,
-        1,0,0,0,52,55,1,0,0,0,53,51,1,0,0,0,53,54,1,0,0,0,54,56,1,0,0,0,
-        55,53,1,0,0,0,56,57,5,5,0,0,57,58,3,14,7,0,58,11,1,0,0,0,59,64,5,
-        7,0,0,60,61,5,3,0,0,61,63,5,7,0,0,62,60,1,0,0,0,63,66,1,0,0,0,64,
-        62,1,0,0,0,64,65,1,0,0,0,65,13,1,0,0,0,66,64,1,0,0,0,67,72,3,16,
-        8,0,68,69,5,4,0,0,69,71,3,16,8,0,70,68,1,0,0,0,71,74,1,0,0,0,72,
-        70,1,0,0,0,72,73,1,0,0,0,73,15,1,0,0,0,74,72,1,0,0,0,75,77,7,0,0,
-        0,76,75,1,0,0,0,77,78,1,0,0,0,78,76,1,0,0,0,78,79,1,0,0,0,79,17,
-        1,0,0,0,9,20,22,30,33,40,53,64,72,78
+        4,1,9,71,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,
+        2,7,7,7,1,0,1,0,5,0,19,8,0,10,0,12,0,22,9,0,1,0,1,0,1,1,1,1,1,1,
+        3,1,29,8,1,1,1,3,1,32,8,1,1,2,1,2,1,2,4,2,37,8,2,11,2,12,2,38,1,
+        3,1,3,1,4,1,4,1,4,1,4,1,5,1,5,1,5,5,5,50,8,5,10,5,12,5,53,9,5,1,
+        5,1,5,1,5,1,6,1,6,1,6,5,6,61,8,6,10,6,12,6,64,9,6,1,7,4,7,67,8,7,
+        11,7,12,7,68,1,7,0,0,8,0,2,4,6,8,10,12,14,0,1,1,0,5,6,71,0,20,1,
+        0,0,0,2,28,1,0,0,0,4,33,1,0,0,0,6,40,1,0,0,0,8,42,1,0,0,0,10,46,
+        1,0,0,0,12,57,1,0,0,0,14,66,1,0,0,0,16,19,5,8,0,0,17,19,3,2,1,0,
+        18,16,1,0,0,0,18,17,1,0,0,0,19,22,1,0,0,0,20,18,1,0,0,0,20,21,1,
+        0,0,0,21,23,1,0,0,0,22,20,1,0,0,0,23,24,5,0,0,1,24,1,1,0,0,0,25,
+        29,3,4,2,0,26,29,3,8,4,0,27,29,3,10,5,0,28,25,1,0,0,0,28,26,1,0,
+        0,0,28,27,1,0,0,0,29,31,1,0,0,0,30,32,5,8,0,0,31,30,1,0,0,0,31,32,
+        1,0,0,0,32,3,1,0,0,0,33,34,5,1,0,0,34,36,5,6,0,0,35,37,3,6,3,0,36,
+        35,1,0,0,0,37,38,1,0,0,0,38,36,1,0,0,0,38,39,1,0,0,0,39,5,1,0,0,
+        0,40,41,7,0,0,0,41,7,1,0,0,0,42,43,5,2,0,0,43,44,5,6,0,0,44,45,3,
+        12,6,0,45,9,1,0,0,0,46,51,5,6,0,0,47,48,5,3,0,0,48,50,5,6,0,0,49,
+        47,1,0,0,0,50,53,1,0,0,0,51,49,1,0,0,0,51,52,1,0,0,0,52,54,1,0,0,
+        0,53,51,1,0,0,0,54,55,5,4,0,0,55,56,3,12,6,0,56,11,1,0,0,0,57,62,
+        3,14,7,0,58,59,5,3,0,0,59,61,3,14,7,0,60,58,1,0,0,0,61,64,1,0,0,
+        0,62,60,1,0,0,0,62,63,1,0,0,0,63,13,1,0,0,0,64,62,1,0,0,0,65,67,
+        7,0,0,0,66,65,1,0,0,0,67,68,1,0,0,0,68,66,1,0,0,0,68,69,1,0,0,0,
+        69,15,1,0,0,0,8,18,20,28,31,38,51,62,68
     ];
 
     private static __ATN: antlr.ATN;
@@ -661,8 +617,8 @@ export class ItemDeclContext extends antlr.ParserRuleContext {
     public ITEM(): antlr.TerminalNode {
         return this.getToken(TagSetParser.ITEM, 0)!;
     }
-    public pattern(): PatternContext {
-        return this.getRuleContext(0, PatternContext)!;
+    public WORD(): antlr.TerminalNode {
+        return this.getToken(TagSetParser.WORD, 0)!;
     }
     public valueList(): ValueListContext {
         return this.getRuleContext(0, ValueListContext)!;
@@ -734,51 +690,6 @@ export class SugarDeclContext extends antlr.ParserRuleContext {
     public override accept<Result>(visitor: TagSetVisitor<Result>): Result | null {
         if (visitor.visitSugarDecl) {
             return visitor.visitSugarDecl(this);
-        } else {
-            return visitor.visitChildren(this);
-        }
-    }
-}
-
-
-export class PatternContext extends antlr.ParserRuleContext {
-    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
-        super(parent, invokingState);
-    }
-    public WORD(): antlr.TerminalNode[];
-    public WORD(i: number): antlr.TerminalNode | null;
-    public WORD(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
-    	if (i === undefined) {
-    		return this.getTokens(TagSetParser.WORD);
-    	} else {
-    		return this.getToken(TagSetParser.WORD, i);
-    	}
-    }
-    public AMP(): antlr.TerminalNode[];
-    public AMP(i: number): antlr.TerminalNode | null;
-    public AMP(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
-    	if (i === undefined) {
-    		return this.getTokens(TagSetParser.AMP);
-    	} else {
-    		return this.getToken(TagSetParser.AMP, i);
-    	}
-    }
-    public override get ruleIndex(): number {
-        return TagSetParser.RULE_pattern;
-    }
-    public override enterRule(listener: TagSetListener): void {
-        if(listener.enterPattern) {
-             listener.enterPattern(this);
-        }
-    }
-    public override exitRule(listener: TagSetListener): void {
-        if(listener.exitPattern) {
-             listener.exitPattern(this);
-        }
-    }
-    public override accept<Result>(visitor: TagSetVisitor<Result>): Result | null {
-        if (visitor.visitPattern) {
-            return visitor.visitPattern(this);
         } else {
             return visitor.visitChildren(this);
         }

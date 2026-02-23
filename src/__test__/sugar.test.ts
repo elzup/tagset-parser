@@ -15,14 +15,14 @@ set B 青
 A, B: x, y`
     const result = parse(input)
     expect(result.items).toEqual([
-      { pattern: 'A&B', bitmask: 3, values: ['x', 'y'] },
+      { pattern: 'A,B', bitmask: 3, values: ['x', 'y'] },
     ])
   })
 
   it('mixes item and sugar syntax', () => {
     const input = `set A 赤
 set B 青
-item A&B x
+item A x
 A, B: y`
     const result = parse(input)
     expect(result.items).toHaveLength(2)

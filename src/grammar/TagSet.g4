@@ -20,15 +20,11 @@ labelPart
     ;
 
 itemDecl
-    : ITEM pattern valueList
+    : ITEM WORD valueList
     ;
 
 sugarDecl
     : WORD (COMMA WORD)* COLON valueList
-    ;
-
-pattern
-    : WORD (AMP WORD)*
     ;
 
 valueList
@@ -44,12 +40,12 @@ valueItem
 SET             : 'set' ;
 ITEM            : 'item' ;
 
-AMP             : '&' ;
 COMMA           : ',' ;
 COLON           : ':' ;
 
 QUOTED_STRING   : '"' ~["\r\n]* '"' ;
-WORD            : ~[ \t\r\n,:&"]+ ;
+WORD            : ~[ \t\r\n,:"]+ ;
 
+COMMENT         : '#' ~[\r\n]* -> skip ;
 NL              : [\r\n]+ ;
 WS              : [ \t]+ -> skip ;

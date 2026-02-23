@@ -41,16 +41,15 @@ set B Blue Color`.trim()
   })
 
   describe('item declarations', () => {
-    it('parses basic item with pattern and values', () => {
+    it('parses basic item with single set and values', () => {
       const input = `
 set A 赤
-set B 青
-item A&B x,c`.trim()
+item A x,c`.trim()
 
       const result = parse(input)
 
       expect(result.items).toEqual([
-        { pattern: 'A&B', bitmask: 3, values: ['x', 'c'] },
+        { pattern: 'A', bitmask: 1, values: ['x', 'c'] },
       ])
     })
 
@@ -79,13 +78,13 @@ item B q`.trim()
       expect(result.items[1].bitmask).toBe(2)
     })
 
-    it('three sets', () => {
+    it('three sets via sugar syntax', () => {
       const input = `
 ${HEADER_3SETS}
-item A only-a
-item B only-b
-item A&C a-and-c
-item A&B&C all`.trim()
+A: only-a
+B: only-b
+A,C: a-and-c
+A,B,C: all`.trim()
 
       const result = parse(input)
 
@@ -97,34 +96,16 @@ item A&B&C all`.trim()
   })
 
   describe('pattern syntax', () => {
-    it('supports _ placeholder in & syntax', () => {
+    it('supports _ placeholder in sugar syntax', () => {
       const input = `
 ${HEADER_3SETS}
-item A&_&C a-and-c
-item _&B&_ only-b`.trim()
+A,_,C: a-and-c
+_,B,_: only-b`.trim()
 
       const result = parse(input)
 
       expect(result.items[0].bitmask).toBe(5)
       expect(result.items[1].bitmask).toBe(2)
-    })
-
-    it('supports padding syntax with spaces', () => {
-      const input = `
-${HEADER_3SETS}
-item A  &C a-and-c
-item A & C a-and-c2
-item A     "only-a1"
-item  A    "only-a2"
-item   B   only-b`.trim()
-
-      const result = parse(input)
-
-      expect(result.items[0].bitmask).toBe(5) // A&C
-      expect(result.items[1].bitmask).toBe(5) // A & C
-      expect(result.items[2].bitmask).toBe(1) // A
-      expect(result.items[3].bitmask).toBe(1) // A
-      expect(result.items[4].bitmask).toBe(2) // B
     })
   })
 
@@ -164,28 +145,45 @@ A,B,C : x, y`.trim()
       const result = parse(input)
 
       expect(result.items).toEqual([
-        { pattern: 'A&B&C', bitmask: 7, values: ['x', 'y'] },
+        { pattern: 'A,B,C', bitmask: 7, values: ['x', 'y'] },
       ])
     })
 
     it('mixes item and colon syntax', () => {
       const input = `
 ${HEADER_3SETS}
-item A&B special
+item A special
 A,C : 1, 2`.trim()
 
       const result = parse(input)
 
       expect(result.items[0]).toEqual({
-        pattern: 'A&B',
-        bitmask: 3,
+        pattern: 'A',
+        bitmask: 1,
         values: ['special'],
       })
       expect(result.items[1]).toEqual({
-        pattern: 'A&C',
+        pattern: 'A,C',
         bitmask: 5,
         values: ['1', '2'],
       })
+    })
+  })
+
+  describe('comments', () => {
+    it('ignores comment lines', () => {
+      const input = `
+# this is a comment
+set A 赤
+# another comment
+item A x`.trim()
+
+      const result = parse(input)
+
+      expect(result.sets).toEqual([{ id: 'A', label: '赤', index: 0 }])
+      expect(result.items).toEqual([
+        { pattern: 'A', bitmask: 1, values: ['x'] },
+      ])
     })
   })
 })
