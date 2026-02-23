@@ -8,36 +8,85 @@
 $ npm install tagset-parser
 ```
 
+## DSL Examples
+
+### Basic
+
+```
+set A 赤
+set B 青
+
+item A    apple, red
+item B    sky, ocean
+item A&B  purple, violet
+# syntax suger (Both syntaxes can be mixed freely.)
+A,B : purple, violet
+A,B,_ :  purple, violet
+```
+
+### Auto-Detect Sets
+
+`set` declarations are optional. Sets are auto-detected from patterns.
+
+```
+A: apple
+B: sky
+A, B: purple
+```
+
+Explicit and auto-detected sets can coexist — `set A Red` gives A a label, while B is auto-detected as `{ id: 'B', label: 'B' }`.
+
+### Placeholder `_`
+
+`_` is ignored in patterns, useful for alignment in `item` syntax.
+
+```
+item A&_&C  a-and-c
+item _&B&_  only-b
+```
+
+### Quoted Strings
+
+```
+item A "hello world", "foo bar"
+```
+
+## Bitmask
+
+Each item gets a `bitmask` based on which sets appear in its pattern. Set index determines the bit position.
+
+```
+set A 赤    → index 0 → bit 1
+set B 青    → index 1 → bit 2
+set C 緑    → index 2 → bit 4
+
+item A      → bitmask: 1  (0b001)
+item B      → bitmask: 2  (0b010)
+item A&C    → bitmask: 5  (0b101)
+item A&B&C  → bitmask: 7  (0b111)
+```
+
 ## Usage
 
 ```ts
 import { parse } from 'tagset-parser'
 
-// Classic syntax
-const ast = parse(`set A 赤
+const ast = parse(`
+set A 赤
 set B 青
-item A&B x,c`)
+item A&B x, y
+A: solo
+`)
 
-// Sugar syntax (colon)
-const ast2 = parse(`A, B: x, y`)
+ast.sets
+// [{ id: 'A', label: '赤', index: 0 }, { id: 'B', label: '青', index: 1 }]
 
-// Auto-detect sets (no set declarations needed)
-const ast3 = parse(`item A&B x`)
-// ast3.sets → [{ id: 'A', label: 'A', index: 0 }, { id: 'B', label: 'B', index: 1 }]
+ast.items
+// [
+//   { pattern: 'A&B', bitmask: 3, values: ['x', 'y'] },
+//   { pattern: 'A',   bitmask: 1, values: ['solo'] },
+// ]
 ```
-
-## Syntax
-
-```
-set <id> <label>        # Declare a set (optional)
-item <pattern> <values> # Declare an item with & pattern
-<ids>: <values>         # Sugar syntax (comma-separated IDs)
-```
-
-- `set` declarations are optional; sets are auto-detected from patterns
-- Patterns use `&` between set IDs: `A&B`, `A&_&C`
-- `_` is a placeholder (ignored in bitmask)
-- Values are comma-separated: `x,y` or `x, y`
 
 ## License
 
