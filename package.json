@@ -26,7 +26,7 @@
     "dsl"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "packageManager": "pnpm@9.15.4",
   "scripts": {
